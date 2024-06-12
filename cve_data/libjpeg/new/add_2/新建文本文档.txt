@@ -1,0 +1,24 @@
+https://github.com/libjpeg-turbo/libjpeg-turbo/issues/680
+https://github.com/libjpeg-turbo/libjpeg-turbo/commit/62590d428b8c059a4a469de28f36d199f9392192
+asan
+
+../build_asan_g/djpeg -colors 10 -rgb565 -nosmooth poc17min.jpg
+
+Premature end of JPEG file
+=================================================================
+==1996022==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x62f0000003f8 at pc 0x7f51b8c54d9a bp 0x7ffc65b5e880 sp 0x7ffc65b5e870
+READ of size 2 at 0x62f0000003f8 thread T0
+    #0 0x7f51b8c54d99 in h2v2_merged_upsample_565D_le /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdmrg565.c:306
+    #1 0x7f51b8c54d99 in h2v2_merged_upsample_565D /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdmerge.c:523
+    #2 0x7f51b8c55271 in merged_2v_upsample /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdmerge.c:260
+    #3 0x7f51b8c565ae in post_process_prepass /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdpostct.c:184
+    #4 0x7f51b8c4651c in process_data_simple_main /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdmainct.c:317
+    #5 0x7f51b8b834a4 in output_pass_setup /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdapistd.c:139
+    #6 0x556594f38f8f in main /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/djpeg.c:708
+    #7 0x7f51b89260b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x240b2)
+    #8 0x556594f3ab3d in _start (/home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/build_asan_g/djpeg+0x8b3d)
+
+0x62f0000003f8 is located 8 bytes to the left of 50111-byte region [0x62f000000400,0x62f00000c7bf)
+allocated by thread T0 here:
+    #0 0x7f51b8e00808 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:144
+    #1 0x7f51b8befcdf in alloc_small /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jmemmgr.c:317

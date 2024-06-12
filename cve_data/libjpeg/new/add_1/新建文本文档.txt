@@ -1,0 +1,16 @@
+https://github.com/libjpeg-turbo/libjpeg-turbo/issues/758
+asan
+https://github.com/libjpeg-turbo/libjpeg-turbo/commit/6a522fcda46934b3dc2464114d1283f110105d5e
+ ./jpegtran -drop +100+200 file1.jpg -maxmemory 4m poc
+
+==229843==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x55555556068f bp 0x7fffffffd710 sp 0x7fffffffd6b0 T0)
+==229843==The signal is caused by a READ memory access.
+==229843==Hint: address points to the zero page.
+    #0 0x55555556068e in adjust_quant /root/programs_rq5/libjpeg-turbo-3.0.2/transupp.c:206
+    #1 0x555555570833 in jtransform_adjust_parameters /root/programs_rq5/libjpeg-turbo-3.0.2/transupp.c:2099
+    #2 0x55555555c7c4 in main /root/programs_rq5/libjpeg-turbo-3.0.2/jpegtran.c:642
+    #3 0x7ffff7172082 in __libc_start_main ../csu/libc-start.c:308
+    #4 0x5555555597cd in _start (/root/programs_rq5/libjpeg-turbo-3.0.2/build_asan/bin/jpegtran+0x57cd)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV /root/programs_rq5/libjpeg-turbo-3.0.2/transupp.c:206 in adjust_quant

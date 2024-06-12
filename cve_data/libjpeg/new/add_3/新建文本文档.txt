@@ -1,0 +1,15 @@
+https://github.com/libjpeg-turbo/libjpeg-turbo/issues/669
+asan
+../build_asan_g/djpeg -scale 1/7 -memsrc -crop 5x5+3+3 poc2.jpg
+
+=================================================================
+==3876060==ERROR: AddressSanitizer: heap-use-after-free on address 0x62f00001610c at pc 0x7ff867433794 bp 0x7ffe311233d0 sp 0x7ffe311233c0
+READ of size 2 at 0x62f00001610c thread T0
+    #0 0x7ff867433793 in ycc_rgb_convert_internal /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdcolext.c:61
+    #1 0x7ff867433793 in ycc_rgb_convert /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdcolor.c:295
+    #2 0x7ff867450357 in sep_upsample /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdsample.c:100
+    #3 0x7ff86743f918 in process_data_context_main /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdmainct.c:381
+    #4 0x7ff867427a6b in jpeg12_read_scanlines /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/jdapistd.c:333
+    #5 0x557a8f7173b4 in main /home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/djpeg.c:815
+    #6 0x7ff86711f0b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x240b2)
+    #7 0x557a8f717b3d in _start (/home/oceane/fuzz_test/new_djpeg/libjpeg-turbo/build_asan_g/djpeg+0x8b3d)
